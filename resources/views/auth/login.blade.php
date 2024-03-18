@@ -24,6 +24,16 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        @if(session('login_attempts', 0) >= 3)
+            <div class="mb-3">
+                {!! NoCaptcha::renderJs() !!}
+                {!! NoCaptcha::display() !!}
+                @error('g-recaptcha-response')
+                    <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+        @endif
+
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
@@ -31,6 +41,10 @@
                 <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
             </label>
         </div>
+
+        <a href="{{ route('login-google') }}" class="btn btn-primary">Iniciar sesión con Google</a>
+
+        <a href="{{ route('login-github') }}" class="btn btn-primary">Iniciar sesión con Github</a>
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))

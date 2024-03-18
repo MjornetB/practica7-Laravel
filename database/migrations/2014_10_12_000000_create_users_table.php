@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken()->nullable();
             $table->timestamp("time_token")->nullable();
-            $table->string("social_provider")->nullable();
+            $table->string('provider')->nullable();
+            $table->string('provider_id')->nullable()->unique();
             $table->string("provisional_name_oauth")->nullable();
             $table->timestamps();
         });

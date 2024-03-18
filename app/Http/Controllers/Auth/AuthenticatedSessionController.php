@@ -25,11 +25,33 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        // Inicia o incrementa el contador de intentos de inicio de sesión
+        $attempts = session()->increment('login_attempts', 1);
 
-        $request->session()->regenerate();
+        // Valida el reCAPTCHA solo después de 3 intentos fallidos
+        if ($attempts > 3) {
+            $request->validate([
+                'g-recaptcha-response' => 'required|captcha',
+            ], [
+                'g-recaptcha-response.required' => 'Por favor, complete el reCAPTCHA.',
+                'g-recaptcha-response.captcha' => 'Error al validar el reCAPTCHA. Inténtalo de nuevo.',
+            ]);
+        }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        try {
+            $request->authenticate();
+
+            $request->session()->regenerate();
+
+            // Reinicia el contador de intentos después de un inicio de sesión exitoso
+            session()->forget('login_attempts');
+
+            return redirect()->intended(RouteServiceProvider::HOME);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Si la autenticación falla, el contador se incrementará automáticamente
+            // debido a la llamada a session()->increment al inicio de este método
+            throw $e;
+        }
     }
 
     /**
