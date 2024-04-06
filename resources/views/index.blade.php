@@ -25,10 +25,10 @@
             @auth
                 <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
             @else
-                <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
+                <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Inicio de sesión</a>
 
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+                    <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Registro</a>
                 @endif
             @endauth
         </div>
@@ -45,6 +45,8 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <!-- Llista d'articles -->
+                        <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Artículos</h1>
                         <ul>
                             @forelse($articles as $article)
                                 <li>{{ $article->title }}</li>
@@ -52,7 +54,17 @@
                                 <li>No hay artículos para mostrar</li>
                             @endforelse
                         </ul>
-                        {{ $articles->links() }}
+                        <!-- Paginació -->
+                        {{ $articles->withQueryString()->links() }}
+                        <form action="{{ url()->current() }}" method="GET" class="mb-4">
+                            <label for="perPage" class="block text-sm font-medium text-gray-700">Artículos por página:</label>
+                            <select id="perPage" name="perPage" onchange="this.form.submit()"
+                                    class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                <option value="10"{{ request('perPage') == 10 ? ' selected' : '' }}>10</option>
+                                <option value="20"{{ request('perPage') == 20 ? ' selected' : '' }}>20</option>
+                                <option value="30"{{ request('perPage') == 30 ? ' selected' : '' }}>30</option>
+                            </select>
+                        </form>
                     </div>
                 </div>
             </div>

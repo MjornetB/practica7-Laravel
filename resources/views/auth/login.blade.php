@@ -23,7 +23,7 @@
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
-
+        <!-- Captcha -->
         @if(session('login_attempts', 0) >= 3)
             <div class="mb-3">
                 {!! NoCaptcha::renderJs() !!}
@@ -42,9 +42,16 @@
             </label>
         </div>
 
-        <a href="{{ route('login-google') }}" class="btn btn-primary">Iniciar sesión con Google</a>
+        <!-- Botó per a iniciar sesió amb Google -->
+        <a href="{{ route('login-google') }}" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900 focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150">
+            Iniciar sesión con Google
+        </a>
 
-        <a href="{{ route('login-github') }}" class="btn btn-primary">Iniciar sesión con Github</a>
+        <!-- Botó per a iniciar sesió amb Github -->
+        <a href="{{ route('login-github') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-900 active:bg-gray-700 focus:outline-none focus:border-gray-700 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+            Iniciar sesión con Github
+        </a>
+
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))

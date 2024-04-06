@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Crea la taula d'usuaris
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->string("provisional_name_oauth")->nullable();
             $table->timestamps();
         });
-
+        // Crea l'usuari admin, necessari per a poder assignar-li articles a l'usuari.
         DB::table('users')->insert([
             ['name' => 'admin', 'email' => 'm.jornet@sapalomera.cat', 'password' => Hash::make('root')],
             ]);

@@ -12,6 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Creació de la taula articles
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('title');
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
-
+        // Creació d'alguns articles assignats a l'usuari amb id 1
         DB::table('articles')->insert([
             ['id' => 1, 'title' => 'Descubrimiento de exoplanetas mediante inteligencia artificial.', 'user_id' => 1],
             ['id' => 2, 'title' => 'Los beneficios de la meditación en la salud mental.', 'user_id' => 1],

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Articles') }}
+            {{ __('Artículos') }}
         </h2>
     </x-slot>
 
@@ -9,8 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Articles
+                    <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Artículos
                         de {{ Auth::user()->name }}</h1>
+                    <!-- Articles i les opcions de edit and delete -->
                     <ul>
                         @forelse($articles as $article)
                             <li>
@@ -26,7 +27,15 @@
                             <li>No hay artículos para mostrar</li>
                         @endforelse
                     </ul>
-                    {{ $articles->links() }}
+                    <!-- Paginació i selecció de resultats per pàgina -->
+                    {{ $articles->withQueryString()->links() }}
+                    <form action="{{ url()->current() }}" method="GET">
+                        <select name="perPage" onchange="this.form.submit()">
+                            <option value="10"{{ request('perPage') == 10 ? ' selected' : '' }}>10</option>
+                            <option value="20"{{ request('perPage') == 20 ? ' selected' : '' }}>20</option>
+                            <option value="30"{{ request('perPage') == 30 ? ' selected' : '' }}>30</option>
+                        </select>
+                    </form>
                 </div>
             </div>
         </div>
@@ -35,8 +44,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Control d'articles
+                    <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Control de artículos
                         de {{ Auth::user()->name }}</h1>
+                    <!-- Formulari per a crear un article -->
                     <label>Crea un artículo</label>
                     <form method="POST" action="{{ route('articles.store') }}">
                         @csrf

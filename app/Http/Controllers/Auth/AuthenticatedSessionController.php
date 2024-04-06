@@ -25,10 +25,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // Inicia o incrementa el contador de intentos de inicio de sesión
+        // Inicia o increment el comptador de intents de login
         $attempts = session()->increment('login_attempts', 1);
 
-        // Valida el reCAPTCHA solo después de 3 intentos fallidos
+        // Si la variable de intents de login es més gran que 3, valida el reCAPTCHA
         if ($attempts > 3) {
             $request->validate([
                 'g-recaptcha-response' => 'required|captcha',
@@ -43,13 +43,11 @@ class AuthenticatedSessionController extends Controller
 
             $request->session()->regenerate();
 
-            // Reinicia el contador de intentos después de un inicio de sesión exitoso
+            // Si la autenticació és correcta, esborra el comptador de intents de login
             session()->forget('login_attempts');
 
             return redirect()->intended(RouteServiceProvider::HOME);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Si la autenticación falla, el contador se incrementará automáticamente
-            // debido a la llamada a session()->increment al inicio de este método
             throw $e;
         }
     }
