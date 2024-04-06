@@ -33,16 +33,16 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'article' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
         ], [
-            'article.required' => 'El artículo no puede estar vacío.',
-            'article.max' => 'El artículo no puede superar los 255 caracteres.',
+            'title.required' => 'El artículo no puede estar vacío.',
+            'title.max' => 'El artículo no puede superar los 255 caracteres.',
         ]);
 
         $article = Article::where('id', $id)->where('user_id', auth()->id())->first();
 
         if ($article) {
-            $article->title = $validatedData['article'];
+            $article->title = $validatedData['title'];
             $article->save();
             return redirect()->route('indexLogat')->with('success', 'Artículo actualizado correctamente.');
         } else {
